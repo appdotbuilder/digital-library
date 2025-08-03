@@ -1,11 +1,16 @@
 from app.database import create_tables
-from nicegui import ui
+from app.sample_data import initialize_sample_data_if_needed
+import app.digital_library
+import app.content_management
 
 
 def startup() -> None:
     # this function is called before the first request
     create_tables()
 
-    @ui.page("/")
-    def index():
-        ui.label("🚧 Work in progress 🚧").style("font-size: 2rem; text-align: center; margin-top: 2rem")
+    # Initialize sample data if database is empty
+    initialize_sample_data_if_needed()
+
+    # Initialize all application modules
+    app.digital_library.create()
+    app.content_management.create()
